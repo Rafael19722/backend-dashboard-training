@@ -6,7 +6,6 @@ import { AppController } from './app.controller';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProductsModule } from './products/products.module';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
-import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
