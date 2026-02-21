@@ -5,6 +5,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProductsModule } from './products/products.module';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -21,6 +23,12 @@ import { ProductsModule } from './products/products.module';
       limit: 10,
     }]),
     ProductsModule,
+    PrometheusModule.register({
+      path: '/metrics',
+      defaultMetrics: {
+        enabled: true,
+      },
+    }),
   ],
   controllers: [AppController],
   providers: [
