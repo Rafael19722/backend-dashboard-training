@@ -6,6 +6,7 @@ import { InjectMetric } from '@willsoto/nestjs-prometheus';
 import { Counter } from 'prom-client';
 import { PromptTemplate } from '@langchain/core/prompts';
 import { StringOutputParser } from '@langchain/core/output_parsers';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 
 @Injectable()
 export class ProductsService {
@@ -16,12 +17,15 @@ export class ProductsService {
   ) {}
 
   async generateDescription(productName: string) {
-    /* Exemplo de como seria em produção
+    
     const prompt = PromptTemplate.fromTemplate(
-      "Você é um especialista em marketing. Crie uma descrição curta e vendedora para o produto: {product}"
+      "Você é um especialista em marketing. Crie uma descrição curta e vendedora para o produto: {product}. Não precisa me confirmar que entendeu, apenas me dê a descrição curta,"
     );
 
-    const model = new ChatOpenAI({ apiKey: 'api-key', modelName: 'gpt-4' });
+    const model = new ChatGoogleGenerativeAI({
+      model: "gemini-2.5-flash",
+      temperature: 0.7,
+    });
 
     const parser = new StringOutputParser();
 
@@ -29,9 +33,7 @@ export class ProductsService {
 
     const result = await chain.invoke({ product: productName });
     
-    return { description: result }
-    */
-    return { description: `O produto '${productName}' é a escolha perfeita para quem busca qualidade e alta performance. Aprovete nossa oferta exclusiva!` };
+    return { description: result };
   }
 
   async create(createProductDto: CreateProductDto) {
