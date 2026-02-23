@@ -1,8 +1,8 @@
-# Dashboard API - Modern Enterprise Stack
+# Dashboard API 
 
 A robust, scalable, and observability-focused API built with **NestJS**, designed to simulate a real production environment with Artificial Intelligence integration for dynamic data generation (Lazy Evaluation).
 
-## Tech Stack (Zero Magic)
+## Tech Stack 
 
 This project was built using industry best practices and tools (DevOps, SRE, and AI):
 
