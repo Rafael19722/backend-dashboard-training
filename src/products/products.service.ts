@@ -59,6 +59,19 @@ export class ProductsService {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
 
+    if (!product.description) {
+      const aiResponse = await this.generateDescription(product.title);
+
+      const updateProduct = await this.prisma.product.update({
+        where: { id },
+        data: {
+          description: aiResponse.description,
+        },
+      });
+
+      return updateProduct;
+    }
+
     return product;
   }
 
