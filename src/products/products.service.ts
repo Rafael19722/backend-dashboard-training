@@ -21,7 +21,7 @@ export class ProductsService {
   async generateDescription(productName: string) {
     
     const prompt = PromptTemplate.fromTemplate(
-      "Você é um especialista em marketing. Crie uma descrição curta e vendedora para o produto: {product}. Não precisa me confirmar que entendeu, apenas me dê a descrição curta,"
+      "You're a marketing expert. Create a short, compelling description for the product: {product}. You don't need to confirm that you understand it, just give me the short description."
     );
 
     const model = new ChatGoogleGenerativeAI({
