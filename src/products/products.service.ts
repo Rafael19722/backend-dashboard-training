@@ -7,6 +7,8 @@ import { Counter } from 'prom-client';
 import { PromptTemplate } from '@langchain/core/prompts';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { FindAllProductsDto } from './dto/find-all-products.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ProductsService {
@@ -46,8 +48,38 @@ export class ProductsService {
     return product;
   }
 
-  async findAll() {
-    return this.prisma.product.findMany();
+  async findAll(query: FindAllProductsDto) {
+    const { page = 1, limit = 10, category, search } = query;
+
+    const skip = (page - 1) * limit;
+
+    const whereCondition: Prisma.ProductWhereInput = {
+      category: category ? category : undefined,
+      title: search ? { contains: search } : undefined
+    };
+
+    const [products, total] = await Promise.all([
+      this.prisma.product.findMany({
+        where: whereCondition,
+        skip: skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.product.count({
+        where: whereCondition,
+      }),
+    ]);
+
+    return {
+      data: products,
+      meta: {
+        totalItems: total,
+        itemCount: products.length,
+        itemsPerPage: limit,
+        totalPages: Math.ceil(total / limit),
+        currentPage: page,
+      },
+    };
   }
 
   async findOne(id: string) {
